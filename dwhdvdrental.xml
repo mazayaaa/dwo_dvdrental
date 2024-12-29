@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<Schema name="dwhdvdrental">
+<!--
+  == This software is subject to the terms of the Eclipse Public License v1.0
+  == Agreement, available at the following URL:
+  == http://www.eclipse.org/legal/epl-v10.html.
+  == You must accept the terms of that agreement to use this software.
+  ==
+  == Copyright (C) 2000-2005 Julian Hyde
+  == Copyright (C) 2005-2011 Pentaho and others
+  == All Rights Reserved.
+  -->
+
+<!-- Shared dimensions -->
+
+  
+
+<!-- Sales -->
+<Cube name="Jual" defaultMeasure="Amount">
+  <!-- Use annotations to provide translations of this cube's caption and
+       description into German and French. Use of annotations in this manner is
+       experimental and unsupported; just for testing right now. -->
+  
+  <Table name="fact_payment"/>
+
+    
+  <Dimension name="Store" foreignKey ="sk_store">
+      <Hierarchy hasAll="true" allMemberName="All Stores" primaryKey ="sk_store">
+      <Table name="dim_store"/>
+      <Level name="store_address" column="Store_address"/>
+      </Hierarchy>
+      
+  </Dimension>
+
+ 
+  <Dimension name="Time" foreignKey="sk_date">
+    <Hierarchy hasAll="true" allMemberName="All Times" primaryKey="sk_waktu">
+      <Table name="dim_date" />
+      <Level name="tahun_angka" column="sk_tahun" type="Numeric" uniqueMembers="true"
+          levelType="TimeYears"/>
+      <Level name="bulan_angka" column="sk_bulan" uniqueMembers="false" type="Numeric"
+          levelType="TimeMonths"/>
+    </Hierarchy>
+   
+  </Dimension>
+
+  <Dimension name="Customer" foreignKey="sk_customers">
+    <Hierarchy  hasAll  ="true" allMemberName="All Customers" primaryKey  = "customer_id">
+        <Table name="dim_customers"/>
+        <Level name="customer_fullname" column="customer_fullname"/>
+    </Hierarchy>
+  </Dimension>
+
+  <Dimension name="Film" foreignKey = "sk_film">
+    <Hierarchy hasAll="true" allMemberName="All Films" primaryKey ="sk_film">
+      <Table name="dim_film" />
+      <Level name="Film_category" column="film_category"/>
+      <Level name="Film_title" column="film_title"/>
+    </Hierarchy>
+  </Dimension>
+    
+  
+
+  <Measure name="Amount" column="amount" aggregator="sum"
+      formatString="Standard"/>
+  
+  
+</Cube>
+
+
+
+</Schema>
